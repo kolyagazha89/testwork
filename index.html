@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сокращатель</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <h1>Сокращатель ссылок</h1>
+    <form method="post" id="form">
+        <input type="text" name="longurl" placeholder="Введите ссылку">
+        <input type="submit" > 
+    </form>
+    <h3 id="hlink" style="display:none;"><a id="link" href="#">asdda</a></h3>
+    <h3 id = "h" style="display:none;"></h3>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#form').submit(function(e) {
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: 'class/short.php',
+                    data: $(this).serialize(),
+                    success: function(response)
+                    {
+                        var jsonData = JSON.parse(response);
+                        if(jsonData.success==0){
+                            $('#hlink').css('display','none')
+                            $('#h').css('display','block')
+                            $('#h').text(jsonData.text)
+                        }
+                        else{
+                            $('#h').css('display','none')
+                            $('#hlink').css('display','block')
+                            $('#link').attr('href',"class/route.php?link=" + jsonData.text)
+                            $('#link').text("route/"+jsonData.text)
+                        }
+                   }
+               });
+             });
+        });
+        </script>
+</body>
+</html>
